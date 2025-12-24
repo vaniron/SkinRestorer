@@ -24,6 +24,8 @@ public final class Config implements GsonPostProcessable {
     
     private FirstJoinSkinProvider firstJoinSkinProvider = FirstJoinSkinProvider.MOJANG;
     
+    private String defaultskin = "Thorgod";
+    
     private String proxy = "";
     private transient Proxy parsedProxy = null;
     
@@ -49,6 +51,10 @@ public final class Config implements GsonPostProcessable {
     
     public FirstJoinSkinProvider firstJoinSkinProvider() {
         return this.firstJoinSkinProvider;
+    }
+    
+    public String defaultskin() {
+        return this.defaultskin;
     }
     
     public Optional<Proxy> proxy() {
@@ -96,6 +102,11 @@ public final class Config implements GsonPostProcessable {
         if (this.firstJoinSkinProvider == null) {
             SkinRestorer.LOGGER.warn("FirstJoinSkinProvider config is null, defaulting to MOJANG");
             this.firstJoinSkinProvider = FirstJoinSkinProvider.MOJANG;
+        }
+        
+        if (this.defaultskin == null || this.defaultskin.isEmpty()) {
+            SkinRestorer.LOGGER.warn("Defaultskin config is null or empty, defaulting to 'Thorgod'");
+            this.defaultskin = "Thorgod";
         }
         
         if (this.proxy == null) {

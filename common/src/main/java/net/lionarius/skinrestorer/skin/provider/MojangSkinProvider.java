@@ -130,7 +130,11 @@ public final class MojangSkinProvider implements SkinProvider {
                 .build();
         
         var response = WebUtils.executeRequest(request);
-        WebUtils.throwOnClientErrors(response);
+        
+        if (response.statusCode() == 404) {
+            // Fallback to "defaultskin" config value if the name is not found
+            return getProfile(SkinRestorer.getConfig().defaultskin());
+        }
         
         if (response.statusCode() != 200)
             throw new IllegalArgumentException("no profile with name " + name);
@@ -148,7 +152,6 @@ public final class MojangSkinProvider implements SkinProvider {
                 .build();
         
         var response = WebUtils.executeRequest(request);
-        WebUtils.throwOnClientErrors(response);
         
         if (response.statusCode() != 200)
             throw new IllegalArgumentException("no profile with uuid " + uuid);
